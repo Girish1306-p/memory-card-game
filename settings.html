@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings - Memory Game</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* Neon Slider Styles */
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      background: #06b6d4;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 12px #06b6d4;
+    }
+
+    /* Toggle Switch */
+    .switch {
+      position: relative;
+      width: 45px;
+      height: 22px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.25);
+      transition: 0.4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 2px;
+      bottom: 2px;
+      background: white;
+      transition: 0.4s;
+      border-radius: 50%;
+      box-shadow: 0 0 10px white;
+    }
+
+    input:checked+.slider {
+      background: #06b6d4;
+      box-shadow: 0 0 12px #06b6d4;
+    }
+
+    input:checked+.slider:before {
+      transform: translateX(22px);
+    }
+  </style>
+</head>
+
+<body class="bg-[#0a0f1a] text-white font-[Poppins]">
+
+  <!-- HEADER -->
+  <div class="text-center py-5">
+    <h1 class="text-2xl font-extrabold tracking-wider text-cyan-400 drop-shadow-lg">
+      ⚙ Settings
+    </h1>
+  </div>
+
+  <!-- MAIN PANEL -->
+  <div class="max-w-md mx-auto p-5 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md shadow-xl">
+
+    <!-- Volume Section -->
+    <h2 class="text-lg font-semibold text-cyan-300 mb-3">Audio</h2>
+
+    <div class="mb-5">
+      <label class="text-sm">Master Volume</label>
+      <input id="masterVol" type="range" min="0" max="100" class="mt-1">
+    </div>
+
+    <div class="mb-5">
+      <label class="text-sm">Music Volume</label>
+      <input id="musicVol" type="range" min="0" max="100" class="mt-1">
+    </div>
+
+    <div class="mb-5">
+      <label class="text-sm">SFX Volume</label>
+      <input id="sfxVol" type="range" min="0" max="100" class="mt-1">
+    </div>
+
+    <hr class="border-white/10 my-4">
+
+    <!-- Display Section -->
+    <h2 class="text-lg font-semibold text-cyan-300 mb-3">Display</h2>
+
+    <div class="flex justify-between items-center mb-4">
+      <span class="text-sm">Dark Mode</span>
+      <label class="switch">
+        <input id="darkToggle" type="checkbox">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="flex justify-between items-center mb-4">
+      <span class="text-sm">Vibration</span>
+      <label class="switch">
+        <input id="vibrateToggle" type="checkbox">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <hr class="border-white/10 my-4">
+
+    <!-- Buttons -->
+    <div class="flex flex-col gap-3">
+      <button id="saveSettings"
+        class="w-max py-2 px-5 bg-gradient-to-r from-cyan-400 to-purple-500 font-semibold rounded-xl hover:scale-105 transition ">
+        Save Settings
+      </button>
+
+      <a href="index.html"
+        class="w-max py-2 px-5 text-center bg-white/10 border border-white/10 rounded-xl hover:bg-white/20 transition">
+        ⬅ Back to Home
+      </a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="text-center text-white/40 text-xs mt-10 pb-5">
+    Designed By <span class="text-cyan-300">Girish Panda</span> — UI/UX Designer, Frontend Developer
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    // Load saved settings or default values
+    const saved = JSON.parse(localStorage.getItem("settings")) || {};
+
+    const masterVol = document.getElementById("masterVol");
+    const musicVol = document.getElementById("musicVol");
+    const sfxVol = document.getElementById("sfxVol");
+    const darkToggle = document.getElementById("darkToggle");
+    const vibrateToggle = document.getElementById("vibrateToggle");
+
+    masterVol.value = saved.masterVol ?? 70;
+    musicVol.value = saved.musicVol ?? 60;
+    sfxVol.value = saved.sfxVol ?? 60;
+    darkToggle.checked = saved.darkMode ?? true;
+    vibrateToggle.checked = saved.vibration ?? true;
+
+    // Save Settings
+    document.getElementById("saveSettings").onclick = () => {
+      const newSettings = {
+        masterVol: Number(masterVol.value),
+        musicVol: Number(musicVol.value),
+        sfxVol: Number(sfxVol.value),
+        darkMode: darkToggle.checked,
+        vibration: vibrateToggle.checked,
+      };
+
+      localStorage.setItem("settings", JSON.stringify(newSettings));
+      alert("Settings Saved!");
+    };
+  </script>
+</body>
+
+</html>
